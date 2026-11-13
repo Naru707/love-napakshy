@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>CYBER_CORE // DO_YOU_LOVE_ME</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #07090d;
+      --bg-surface: rgba(15, 20, 28, 0.88);
+      --bg-surface-rose: rgba(20, 12, 18, 0.9);
+      --border-subtle: rgba(52, 211, 153, 0.28);
+      --border-rose: rgba(251, 113, 133, 0.32);
+      --mint: #34d399;
+      --mint-dim: rgba(52, 211, 153, 0.12);
+      --rose: #fb7185;
+      --rose-dim: rgba(251, 113, 133, 0.12);
+      --text-primary: #f4f4f5;
+      --text-secondary: #a1a1aa;
+      --font-mono: 'JetBrains Mono', 'IBM Plex Sans Thai', ui-monospace, SFMono-Regular, monospace;
+      --font-sans: 'IBM Plex Sans Thai', 'JetBrains Mono', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    input, textarea {
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      background-color: var(--bg-base);
+      color: var(--mint);
+      font-family: var(--font-mono);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 2.2s ease;
+    }
+
+    /* Subtle Minimalist Scanline & Vignette */
+    body::before {
+      content: "";
+      display: block;
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 45%, transparent 45%, rgba(0, 0, 0, 0.55) 100%),
+        linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.18) 50%);
+      z-index: 100;
+      background-size: 100% 100%, 100% 3px;
+      pointer-events: none;
+    }
+
+    /* ==============================================================
+       SCREEN 1: THE QUESTION (Minimalist Cyber Dark)
+       ============================================================== */
+    #question-screen {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+      transition: opacity 1s ease;
+      z-index: 10;
+      padding: max(24px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+    }
+
+    .hacker-title {
+      font-size: clamp(1.85rem, 6.5vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: clamp(1.5px, 0.5vw, 3px);
+      color: var(--text-primary);
+      text-shadow: 0 2px 24px rgba(52, 211, 153, 0.25);
+      margin-bottom: clamp(2.2rem, 6vh, 3.2rem);
+      line-height: 1.25;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: clamp(1rem, 5vw, 2.5rem);
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      min-height: 64px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn {
+      min-width: 124px;
+      min-height: 48px;
+      padding: 13px 34px;
+      font-size: clamp(1rem, 2.8vw, 1.15rem);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      letter-spacing: 2px;
+      cursor: pointer;
+      border: 1px solid var(--mint);
+      background: var(--mint-dim);
+      color: var(--mint);
+      transition: transform 0.16s ease, background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+      outline: none;
+      box-shadow: 0 4px 20px rgba(52, 211, 153, 0.14);
+      border-radius: 8px;
+      touch-action: manipulation;
+    }
+
+    .btn:hover, .btn:active {
+      background: var(--mint);
+      color: #05080b;
+      box-shadow: 0 6px 26px rgba(52, 211, 153, 0.32);
+    }
+
+    #btn-no {
+      position: relative;
+      border-color: var(--rose);
+      color: var(--rose);
+      background: var(--rose-dim);
+      box-shadow: 0 4px 20px rgba(251, 113, 133, 0.12);
+      transition: left 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.16s ease;
+      z-index: 15;
+    }
+
+    #btn-no:hover, #btn-no:active {
+      background: var(--rose-dim);
+      color: var(--rose);
+      box-shadow: 0 4px 20px rgba(251, 113, 133, 0.22);
+    }
+
+    /* ==============================================================
+       SCREEN 2: HEART WORDS IN ALL LANGUAGES (FULLSCREEN OVERFLOW)
+       ============================================================== */
+    #heart-screen {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #05070a;
+      transition: opacity 2s ease;
+      z-index: 5;
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .center-name {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: clamp(2rem, 8vw, 4.4rem);
+      color: var(--text-primary);
+      text-shadow: 0 0 24px rgba(52, 211, 153, 0.45), 0 0 42px rgba(251, 113, 133, 0.28);
+      letter-spacing: clamp(3px, 1vw, 5px);
+      z-index: 20;
+      opacity: 0;
+      transform: scale(0.65);
+      transition: all 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.8s;
+      pointer-events: none;
+    }
+
+    .center-name.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* ==============================================================
+       SCREEN 3: PURE RAW HACKER DARK SPACE TERMINAL
+       ============================================================== */
+    #message-screen {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: #05070a;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 25;
+      padding: max(24px, env(safe-area-inset-top)) clamp(22px, 6vw, 64px) max(24px, env(safe-area-inset-bottom));
+      transition: opacity 1.5s ease;
+      cursor: pointer;
+    }
+
+    .frameless-text-container {
+      width: 100%;
+      max-width: 780px;
+      text-align: left;
+    }
+
+    .typed-paragraph {
+      font-family: var(--font-sans);
+      font-size: clamp(1.2rem, 4.2vw, 1.85rem);
+      font-weight: 500;
+      line-height: 1.85;
+      color: var(--text-primary);
+      text-shadow: 0 0 18px rgba(52, 211, 153, 0.22);
+      word-break: break-word;
+      letter-spacing: 0.3px;
+    }
+
+    .prompt-prefix {
+      font-family: var(--font-mono);
+      color: var(--rose);
+      font-weight: 700;
+      margin-right: 10px;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.1em;
+      background: var(--mint);
+      vertical-align: middle;
+      margin-left: 6px;
+      animation: blink 0.85s infinite;
+      border-radius: 1px;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .hint-click {
+      position: absolute;
+      bottom: max(28px, env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: clamp(0.75rem, 2.2vw, 0.9rem);
+      letter-spacing: 2px;
+      color: rgba(161, 161, 170, 0.65);
+      animation: breathe 2.4s infinite ease-in-out;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.35; transform: translate(-50%, 0); }
+      50% { opacity: 0.85; transform: translate(-50%, -3px); }
+    }
+
+    /* ==============================================================
+       SCREEN 4: CRITICAL ERROR GLITCH SCREEN
+       ============================================================== */
+    #error-screen {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: #2b070c;
+      color: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 50;
+      padding: clamp(20px, 5vw, 40px);
+      text-align: center;
+      transition: opacity 0.45s ease;
+    }
+
+    .glitch-flash {
+      animation: glitch-anim 0.18s infinite;
+    }
+
+    @keyframes glitch-anim {
+      0% { transform: translate(0); background: #2b070c; }
+      25% { transform: translate(-5px, 3px); background: #090507; }
+      50% { transform: translate(5px, -3px); background: #450a12; }
+      75% { transform: translate(-3px, -2px); background: #0d120f; }
+      100% { transform: translate(0); background: #2b070c; }
+    }
+
+    .screen-cut-flash {
+      animation: screenCutEffect 0.42s cubic-bezier(0.2, 0.8, 0.25, 1) forwards !important;
+    }
+
+    @keyframes screenCutEffect {
+      0% {
+        transform: scale(1, 1);
+        filter: brightness(1.6) contrast(1.3);
+      }
+      25% {
+        transform: scale(1, 0.005);
+        background: #ffffff;
+        filter: brightness(3.5);
+      }
+      55% {
+        transform: scale(0.04, 0.005);
+        background: #ffffff;
+      }
+      100% {
+        transform: scale(0, 0);
+        background: #000000;
+        opacity: 0;
+      }
+    }
+
+    .error-title {
+      font-size: clamp(1.35rem, 5.5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: clamp(2px, 0.8vw, 4px);
+      margin-bottom: 1.25rem;
+      color: #fecdd3;
+      text-shadow: 0 0 16px rgba(251, 113, 133, 0.55);
+      word-break: break-word;
+    }
+
+    .error-log {
+      font-size: clamp(0.88rem, 2.5vw, 1.1rem);
+      line-height: 1.8;
+      max-width: 640px;
+      color: #fda4af;
+    }
+
+    /* ==============================================================
+       SCREEN 5: ULTRA-HARDCORE HACKER CIPHER GATEWAY
+       ============================================================== */
+    #final-screen {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(7, 9, 13, 0.98);
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 60;
+      padding: max(14px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom));
+      transition: opacity 1.2s ease;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .hacker-rig-box {
+      width: 100%;
+      max-width: 780px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .hacker-bar {
+      background: rgba(52, 211, 153, 0.06);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: clamp(0.72rem, 2.2vw, 0.82rem);
+      letter-spacing: 1.2px;
+      color: var(--mint);
+    }
+
+    .hacker-main-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      min-height: 310px;
+    }
+
+    .hex-stream-sidebar {
+      background: rgba(4, 7, 10, 0.75);
+      border-right: 1px solid rgba(52, 211, 153, 0.16);
+      padding: 12px;
+      font-size: 0.72rem;
+      color: rgba(52, 211, 153, 0.45);
+      line-height: 1.65;
+      overflow: hidden;
+      font-family: var(--font-mono);
+    }
+
+    .hacker-workarea {
+      padding: clamp(16px, 4vw, 26px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      text-align: left;
+    }
+
+    @media (max-width: 650px) {
+      .hacker-main-grid {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .hex-stream-sidebar {
+        display: none;
+      }
+    }
+
+    .ascii-banner {
+      font-size: clamp(0.7rem, 2.2vw, 0.76rem);
+      color: var(--text-secondary);
+      line-height: 1.5;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+      padding-bottom: 10px;
+      word-break: break-word;
+    }
+
+    .gateway-query {
+      font-family: var(--font-sans);
+      font-size: clamp(1.25rem, 4.5vw, 1.85rem);
+      color: var(--text-primary);
+      letter-spacing: 0.5px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .cyber-input-wrap {
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      background: rgba(5, 8, 12, 0.75);
+      padding: 12px 14px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cyber-input-wrap:focus-within {
+      border-color: var(--mint);
+      box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.14);
+    }
+
+    .cyber-prompt {
+      color: var(--rose);
+      font-weight: 700;
+      margin-right: 10px;
+      font-size: clamp(0.85rem, 2.5vw, 1rem);
+      white-space: nowrap;
+    }
+
+    .hacker-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--mint);
+      font-family: var(--font-sans);
+      font-size: max(16px, clamp(1rem, 3.2vw, 1.35rem));
+      width: 100%;
+      caret-color: var(--rose);
+    }
+
+    .hacker-input::placeholder {
+      color: rgba(161, 161, 170, 0.5);
+    }
+
+    .cipher-telemetry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: clamp(0.76rem, 2.3vw, 0.84rem);
+      color: var(--text-secondary);
+    }
+
+    .mobile-tap-btn {
+      background: var(--mint-dim);
+      border: 1px solid var(--border-subtle);
+      color: var(--mint);
+      padding: 8px 14px;
+      min-height: 38px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 6px;
+      touch-action: manipulation;
+    }
+
+    .mobile-tap-btn:active {
+      background: var(--mint);
+      color: #05080b;
+    }
+
+    .btn-submit {
+      margin-top: 4px;
+      min-height: 48px;
+      padding: 14px 16px;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      display: block;
+      width: 100%;
+      border-radius: 8px;
+      font-size: clamp(0.88rem, 2.6vw, 0.96rem);
+      transition: all 0.25s ease;
+      cursor: not-allowed;
+      touch-action: manipulation;
+    }
+
+    .btn-submit.btn-locked {
+      background: rgba(251, 113, 133, 0.06);
+      border: 1px solid rgba(251, 113, 133, 0.25);
+      color: rgba(253, 164, 175, 0.55);
+    }
+
+    .btn-submit.btn-unlocked {
+      background: var(--mint);
+      border: 1px solid var(--mint);
+      color: #05080b;
+      box-shadow: 0 6px 24px rgba(52, 211, 153, 0.3);
+      cursor: pointer;
+    }
+
+    .btn-submit.btn-unlocked:hover,
+    .btn-submit.btn-unlocked:active {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    /* ==============================================================
+       SCREEN 6: SYSTEM REBOOTING SCREEN
+       ============================================================== */
+    #reboot-screen {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-base);
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 70;
+      padding: clamp(20px, 6vw, 40px);
+      font-family: var(--font-mono);
+      color: var(--mint);
+      transition: opacity 1.2s ease;
+    }
+
+    .reboot-box {
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+    }
+
+    .reboot-title {
+      font-size: clamp(1rem, 3.2vw, 1.4rem);
+      letter-spacing: 1.5px;
+      margin-bottom: 18px;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 12px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 2px;
+      margin-bottom: 16px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .progress-bar-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: var(--mint);
+      box-shadow: 0 0 12px rgba(52, 211, 153, 0.45);
+      transition: width 0.1s linear;
+    }
+
+    .reboot-log {
+      font-size: clamp(0.82rem, 2.4vw, 0.92rem);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      min-height: 90px;
+    }
+
+    /* ==============================================================
+       SCREEN 7: CINEMATIC INTERACTIVE RIPPLE TAP
+       ============================================================== */
+    #heartfelt-screen {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(251, 113, 133, 0.06) 0%, transparent 65%),
+        #05070a;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 80;
+      overflow: hidden;
+      padding: max(24px, env(safe-area-inset-top)) clamp(22px, 6vw, 64px) max(24px, env(safe-area-inset-bottom));
+      transition: opacity 1.6s ease;
+      cursor: pointer;
+    }
+
+    #heartfelt-container {
+      max-width: 720px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      transition: opacity 0.55s ease, filter 0.55s ease, transform 0.55s ease;
+    }
+
+    #heartfelt-container.blur-out {
+      opacity: 0;
+      filter: blur(10px);
+      transform: scale(0.96);
+    }
+
+    #heartfelt-container.fade-out {
+      opacity: 0;
+      filter: blur(12px);
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+
+    .heartfelt-paragraph {
+      text-align: center;
+      text-shadow: 0 0 22px rgba(251, 113, 133, 0.2);
+    }
+
+    .heartfelt-cursor {
+      background: var(--rose);
+    }
+
+    #heartfelt-hint {
+      opacity: 0;
+      animation: none;
+      transition: opacity 0.5s ease;
+    }
+
+    #heartfelt-hint.ready {
+      animation: breathe 2.4s infinite ease-in-out;
+    }
+
+    .tap-ripple {
+      position: fixed;
+      width: 24px;
+      height: 24px;
+      margin-left: -12px;
+      margin-top: -12px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(251, 113, 133, 0.7);
+      box-shadow: 0 0 18px rgba(251, 113, 133, 0.25);
+      pointer-events: none;
+      z-index: 1;
+      animation: rippleExpand 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .tap-ripple-inner {
+      position: fixed;
+      width: 14px;
+      height: 14px;
+      margin-left: -7px;
+      margin-top: -7px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      pointer-events: none;
+      z-index: 1;
+      animation: rippleExpandInner 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes rippleExpand {
+      0% {
+        transform: scale(0.5);
+        opacity: 0.85;
+      }
+      100% {
+        transform: scale(11);
+        opacity: 0;
+      }
+    }
+
+    @keyframes rippleExpandInner {
+      0% {
+        transform: scale(0.4);
+        opacity: 0.7;
+      }
+      100% {
+        transform: scale(7.5);
+        opacity: 0;
+      }
+    }
+
+    /* Grand I LOVE YOU */
+    .grand-love {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.88);
+      font-family: var(--font-mono);
+      font-size: clamp(2.1rem, 10vw, 5.8rem);
+      font-weight: 800;
+      letter-spacing: clamp(3px, 1.2vw, 8px);
+      color: var(--text-primary);
+      text-shadow: 0 0 28px rgba(251, 113, 133, 0.55), 0 0 60px rgba(251, 113, 133, 0.25);
+      text-align: center;
+      white-space: nowrap;
+      width: 92%;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 2.2s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 90;
+    }
+
+    .grand-love.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .grand-love-sub {
+      display: block;
+      font-size: clamp(0.95rem, 3.4vw, 1.65rem);
+      letter-spacing: clamp(3px, 1vw, 6px);
+      color: #fda4af;
+      margin-top: 14px;
+    }
+
+    /* ==============================================================
+       SCREEN 8: MOVIE END CREDITS
+       ============================================================== */
+    #credits-screen {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: #060508;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 95;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      transition: opacity 2.2s ease;
+    }
+
+    .credits-crawler {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      max-width: 720px;
+      text-align: center;
+      color: #ffe4e6;
+      font-family: var(--font-sans);
+      line-height: 2;
+      padding: 0 22px;
+      transform: translateY(100vh);
+      transform: translateY(100dvh);
+      will-change: transform;
+    }
+
+    .credits-crawler.crawl {
+      animation: movie-crawl 72s cubic-bezier(0.08, 0.35, 0.15, 1) forwards;
+    }
+
+    @keyframes movie-crawl {
+      0% {
+        transform: translateY(100vh);
+        transform: translateY(100dvh);
+      }
+      100% {
+        transform: translateY(var(--target-translate-y, -60%));
+      }
+    }
+
+    .credit-title {
+      font-family: var(--font-mono);
+      font-size: clamp(1.75rem, 6vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: clamp(3px, 1vw, 6px);
+      color: var(--text-primary);
+      text-shadow: 0 0 24px rgba(251, 113, 133, 0.45);
+      margin-bottom: 22px;
+    }
+
+    .credit-section {
+      margin-bottom: 42px;
+    }
+
+    .credit-role {
+      font-family: var(--font-mono);
+      font-size: clamp(0.8rem, 2.4vw, 1rem);
+      letter-spacing: 3px;
+      color: var(--rose);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .credit-name {
+      font-size: clamp(1.25rem, 4vw, 1.75rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 1.5px;
+    }
+
+    .credit-desc {
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+      color: var(--text-secondary);
+      margin-top: 6px;
+      line-height: 1.75;
+    }
+
+    .btn-replay {
+      margin-top: 22px;
+      min-height: 50px;
+      padding: 14px 32px;
+      background: var(--rose-dim);
+      border: 1px solid var(--rose);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: clamp(0.92rem, 2.8vw, 1.05rem);
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      border-radius: 8px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(251, 113, 133, 0.2);
+      touch-action: manipulation;
+    }
+
+    .btn-replay:hover,
+    .btn-replay:active {
+      background: var(--rose);
+      color: #060508;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(251, 113, 133, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen 1: The Question -->
+  <div id="question-screen">
+    <div class="hacker-title">Do you love me?</div>
+    <div class="btn-group">
+      <button id="btn-yes" class="btn">YES</button>
+      <button id="btn-no" class="btn">NO</button>
+    </div>
+  </div>
+
+  <!-- Screen 2: Heart Words Spreading to Fullscreen (All Languages) -->
+  <div id="heart-screen">
+    <canvas id="heartCanvas"></canvas>
+    <div id="center-name" class="center-name">napakshy</div>
+  </div>
+
+  <!-- Screen 3: Minimal Pure Dark Space Typewriter (Frameless, Mysterious & Atmospheric) -->
+  <div id="message-screen">
+    <div class="frameless-text-container">
+      <p class="typed-paragraph">
+        <span class="prompt-prefix">&gt;:</span><span id="typed-text"></span><span class="cursor"></span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Screen 4: Critical Error Glitch Screen (Original First Version) -->
+  <div id="error-screen">
+    <div class="error-title">SYSTEM_FATAL_EXCEPTION</div>
+    <div class="error-log">
+      CRITICAL_OVERLOAD: Heart Overflow Exceeded Memory Limits.<br>
+      BUFFER_OVERFLOW: Unable to contain love parameters.<br>
+      KERNEL_PANIC: Forcing recovery protocol...
+    </div>
+  </div>
+
+  <!-- Screen 5: Ultra-Hardcore Hacker Cipher Gateway Screen -->
+  <div id="final-screen">
+    <div class="hacker-rig-box">
+      <div class="hacker-bar">
+        <span>SYS_ROOT://CHALLENGE_GATEWAY</span>
+        <span id="gateway-status" style="color: #fb7185;">[STATUS: LOCKED 🔒]</span>
+      </div>
+      <div class="hacker-main-grid">
+        <div class="hex-stream-sidebar" id="hex-stream">
+          0x7F 0x4A 0x1C<br>
+          0x99 0xEE 0x02<br>
+          0x4C 0x4F 0x56<br>
+          0x45 0x5F 0x31<br>
+          0x38 0x4D 0x30<br>
+          0x6E 0x61 0x70<br>
+          0x61 0x6B 0x73<br>
+          0x68 0x79 0x21
+        </div>
+        <div class="hacker-workarea">
+          <div class="ascii-banner">
+            [IDENT: napakshy] // <span id="ascii-socket-status">[SOCKET: 608_DAYS_ANNIVERSARY]</span><br>
+            SECURITY_LEVEL: MAXIMUM // BIOMETRIC_HEART_CIPHER [ACTIVE]
+          </div>
+          <div class="gateway-query">&gt; ROOT_CHALLENGE: เธอรักเค้ามั้ย?</div>
+          <div class="cyber-input-wrap">
+            <span class="cyber-prompt">root@heart:~#</span>
+            <input type="text" id="hacker-input" class="hacker-input" placeholder="กดแป้นพิมพ์อะไรก็ได้..." autocomplete="off">
+          </div>
+          <div class="cipher-telemetry">
+            <span id="cipher-hint">&gt; ถอดรหัสคำตอบ: [ 0 / 5 คำ ]</span>
+            <button id="mobile-type-btn" class="mobile-tap-btn" type="button">[ TAP TO DECRYPT ]</button>
+          </div>
+          <button id="btn-submit-answer" class="btn-submit btn-locked" disabled>
+            [ 🔒 ACCESS_DENIED // ต้องพิมพ์ตอบให้ครบก่อน ]
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 6: System Rebooting Screen (Original First Version) -->
+  <div id="reboot-screen">
+    <div class="reboot-box">
+      <div class="reboot-title">&gt; SYSTEM_REBOOTING: Applying Love Core Patch...</div>
+      <div class="progress-bar-container">
+        <div id="progress-fill" class="progress-bar-fill"></div>
+      </div>
+      <div id="reboot-log" class="reboot-log">&gt; Initializing reboot sequence...</div>
+    </div>
+  </div>
+
+  <!-- Screen 7: Cinematic Interactive Ripple Tap -->
+  <div id="heartfelt-screen">
+    <div id="heartfelt-container" class="frameless-text-container">
+      <p class="typed-paragraph heartfelt-paragraph">
+        <span id="heartfelt-typed-text"></span><span class="cursor heartfelt-cursor"></span>
+      </p>
+    </div>
+    <div id="heartfelt-hint" class="hint-click">[ TAP TO CONTINUE ]</div>
+
+    <!-- Final Grand Love Climax -->
+    <div id="grand-love" class="grand-love">
+      I LOVE YOU
+      <span class="grand-love-sub">napakshy ❤️</span>
+    </div>
+  </div>
+
+  <!-- Screen 8: Movie End Credits Crawl (เอนเครดิตจบเหมือนในหนัง) -->
+  <div id="credits-screen">
+    <div id="credits-crawler" class="credits-crawler">
+      <div class="credit-title">A LOVE STORY</div>
+      <div class="credit-desc" style="margin-bottom: 35px; letter-spacing: 3px;">
+        <div style="font-size: 1.15rem; color: #ff99bb; font-weight: bold; margin-bottom: 8px;">
+          ANNIVERSARY: <span id="anniv-years-months">1 YEAR 8 MONTHS</span>
+        </div>
+        <div id="live-time-ticker" style="font-size: clamp(1.1rem, 3.6vw, 1.5rem); color: #f4f4f5; text-shadow: 0 0 18px rgba(251, 113, 133, 0.4); font-weight: 700; font-family: var(--font-mono);">
+          -- DAYS --H : --M : --S
+        </div>
+      </div>
+
+      <div class="credit-section">
+        <div class="credit-role">[ STARRING ]</div>
+        <div class="credit-name">napakshy (ที่รัก)</div>
+        <div class="credit-desc">&amp;</div>
+        <div class="credit-name">Bankuslow (เค้า)</div>
+      </div>
+
+      <div class="credit-section">
+        <div class="credit-role">[ DIRECTED &amp; CREATED BY ]</div>
+        <div class="credit-name">Bankuslow</div>
+        <div class="credit-desc">สร้างขึ้นด้วยความรักทั้งหมดที่มีให้เธอเสมอนะครับ ❤️</div>
+      </div>
+
+      <div class="credit-section">
+        <div class="credit-role">[ SOUND EFFECTS &amp; MUSIC PRODUCTION ]</div>
+        <div class="credit-name">Bankuslow</div>
+        <div class="credit-desc">Procedural Web Audio Lofi &amp; Melancholic Piano Ballad</div>
+      </div>
+
+      <div class="credit-section">
+        <div class="credit-role">[ CYBER VISUALS &amp; SYSTEM ARCHITECTURE ]</div>
+        <div class="credit-name">Bankuslow</div>
+        <div class="credit-desc">Minimalist Cyber Dark Theme &amp; Interactive Mobile Love Experience</div>
+      </div>
+
+      <div class="credit-section">
+        <div class="credit-role">[ SPECIAL THANKS ]</div>
+        <div class="credit-name">napakshy ❤️</div>
+        <div class="credit-desc">
+          ขอบคุณที่เข้ามาเป็นรอยยิ้มและความสุขในทุกๆ วัน<br>
+          ขอบคุณที่คอยอยู่เคียงข้างและจับมือกันตลอด 1 ปี 8 เดือนที่ผ่านมา
+        </div>
+      </div>
+
+      <div class="credit-section">
+        <div class="credit-role">[ PROMISE ]</div>
+        <div class="credit-desc" style="font-size: 1.15rem; color: #ffffff;">
+          "ยังรักเธอในทุกๆวันและมีแค่เธอที่เป็นส่วนสำคัญในชีวิต"
+        </div>
+      </div>
+
+      <div id="credit-final-anchor" class="credit-section" style="margin-top: 60px; padding-bottom: 60px;">
+        <div class="credit-desc" style="letter-spacing: 5px; color: #ff99bb; font-weight: bold; margin-bottom: 22px;">
+          ...TO BE CONTINUED FOREVER...
+        </div>
+        <button id="btn-replay" class="btn-replay" onclick="location.reload()">[ REPLAY // เล่นใหม่อีกครั้ง ]</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questionScreen = document.getElementById('question-screen');
+    const heartScreen = document.getElementById('heart-screen');
+    const messageScreen = document.getElementById('message-screen');
+    const errorScreen = document.getElementById('error-screen');
+    const finalScreen = document.getElementById('final-screen');
+    const rebootScreen = document.getElementById('reboot-screen');
+    const heartfeltScreen = document.getElementById('heartfelt-screen');
+    const creditsScreen = document.getElementById('credits-screen');
+    const creditsCrawler = document.getElementById('credits-crawler');
+
+    const btnYes = document.getElementById('btn-yes');
+    const btnNo = document.getElementById('btn-no');
+    const canvas = document.getElementById('heartCanvas');
+    const ctx = canvas.getContext('2d');
+    const centerName = document.getElementById('center-name');
+    const typedTextEl = document.getElementById('typed-text');
+
+    const gatewayStatus = document.getElementById('gateway-status');
+    const hackerInput = document.getElementById('hacker-input');
+    const cipherHint = document.getElementById('cipher-hint');
+    const mobileTypeBtn = document.getElementById('mobile-type-btn');
+    const btnSubmitAnswer = document.getElementById('btn-submit-answer');
+    const hexStream = document.getElementById('hex-stream');
+
+    const progressFill = document.getElementById('progress-fill');
+    const rebootLog = document.getElementById('reboot-log');
+
+    const heartfeltContainer = document.getElementById('heartfelt-container');
+    const heartfeltTypedTextEl = document.getElementById('heartfelt-typed-text');
+    const heartfeltHint = document.getElementById('heartfelt-hint');
+    const grandLove = document.getElementById('grand-love');
+
+    // ==============================================================
+    // AUDIO ENGINE: LO-FI (PRE-REBOOT) & SAD WARM PIANO (POST-REBOOT)
+    // ==============================================================
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    // Cyber Keystroke Audio Chirp
+    function playCyberKeystroke() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(2000 + Math.random() * 400, now);
+        osc.frequency.exponentialRampToValueAtTime(500, now + 0.035);
+
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.linearRampToValueAtTime(0.035, now + 0.003);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.045);
+      } catch (e) {}
+    }
+
+    // Original Glitch Alarm Sound
+    function playGlitchAlarm() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.linearRampToValueAtTime(80, now + 0.5);
+
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.85);
+      } catch (e) {}
+    }
+
+    // CRT Screen Cut (จอตัด) Discharge Sound Effect
+    function playScreenCutSound() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(600, now);
+        osc.frequency.exponentialRampToValueAtTime(30, now + 0.18);
+
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.19);
+      } catch (e) {}
+    }
+
+    // Unlock Success Chime
+    function playUnlockChime() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.08);
+          gain.gain.setValueAtTime(0.0001, now + i * 0.08);
+          gain.gain.linearRampToValueAtTime(0.04, now + i * 0.08 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.08 + 0.5);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.08);
+          osc.stop(now + i * 0.08 + 0.55);
+        });
+      } catch (e) {}
+    }
+
+    // Gentle Warm Keystroke (For Screen 7 post-reboot)
+    function playWarmKeystroke() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(750 + Math.random() * 200, now);
+        osc.frequency.exponentialRampToValueAtTime(280, now + 0.05);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1200, now);
+
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.linearRampToValueAtTime(0.02, now + 0.006);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.055);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.06);
+      } catch (e) {}
+    }
+
+    // --- Part 1: Soft Chill Lo-fi Melody (Pre-Reboot) ---
+    let lofiTimer = null;
+    let lofiMasterGain = null;
+
+    function playLofiMelody() {
+      try {
+        const ctx = getAudioContext();
+        lofiMasterGain = ctx.createGain();
+        lofiMasterGain.gain.setValueAtTime(0.024, ctx.currentTime);
+        lofiMasterGain.connect(ctx.destination);
+
+        const chords = [
+          [293.66, 369.99, 440.00, 554.37], // Dmaj7
+          [277.18, 329.63, 392.00, 493.88], // C#m7
+          [246.94, 293.66, 369.99, 440.00], // Bm7
+          [220.00, 277.18, 329.63, 440.00]  // A
+        ];
+
+        let chordIdx = 0;
+        function playChord() {
+          const currentChord = chords[chordIdx % chords.length];
+
+          currentChord.forEach((freq, i) => {
+            setTimeout(() => {
+              if (!lofiMasterGain) return;
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+              const now = ctx.currentTime;
+              gain.gain.setValueAtTime(0.0001, now);
+              gain.gain.linearRampToValueAtTime(1, now + 0.16);
+              gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.5);
+
+              osc.connect(gain);
+              gain.connect(lofiMasterGain);
+
+              osc.start(now);
+              osc.stop(now + 2.6);
+            }, i * 190);
+          });
+
+          chordIdx++;
+          lofiTimer = setTimeout(playChord, 2300);
+        }
+
+        playChord();
+      } catch (e) {}
+    }
+
+    function stopLofiAndTransition() {
+      if (lofiTimer) clearTimeout(lofiTimer);
+      if (lofiMasterGain && audioCtx) {
+        lofiMasterGain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 1.2);
+        setTimeout(() => {
+          try { lofiMasterGain.disconnect(); } catch (e) {}
+          lofiMasterGain = null;
+        }, 1300);
+      }
+    }
+
+    // --- Part 2: Sad, Heartwarming & Nostalgic Piano Ballad (POST-REBOOT) ---
+    function startSadHeartwarmingPiano() {
+      try {
+        const ctx = getAudioContext();
+
+        const masterFilter = ctx.createBiquadFilter();
+        masterFilter.type = 'lowpass';
+        masterFilter.frequency.setValueAtTime(1500, ctx.currentTime);
+
+        const masterGain = ctx.createGain();
+        masterGain.gain.setValueAtTime(0.001, ctx.currentTime);
+        masterGain.gain.exponentialRampToValueAtTime(0.19, ctx.currentTime + 2.5);
+
+        masterFilter.connect(masterGain);
+        masterGain.connect(ctx.destination);
+
+        function playNote(freq, time, duration = 3.2, velocity = 0.045) {
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
+          const noteGain = ctx.createGain();
+
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(freq, time);
+
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(freq, time);
+
+          noteGain.gain.setValueAtTime(0.0001, time);
+          noteGain.gain.linearRampToValueAtTime(velocity, time + 0.025);
+          noteGain.gain.exponentialRampToValueAtTime(0.00008, time + duration);
+
+          osc1.connect(noteGain);
+          osc2.connect(noteGain);
+          noteGain.connect(masterFilter);
+
+          osc1.start(time);
+          osc2.start(time);
+          osc1.stop(time + duration + 0.1);
+          osc2.stop(time + duration + 0.1);
+        }
+
+        const chordPatterns = [
+          [130.81, 196.00, 246.94, 329.63, 392.00, 493.88], // Cmaj9
+          [164.81, 246.94, 293.66, 392.00, 493.88, 587.33], // Em7
+          [87.31,  130.81, 220.00, 329.63, 440.00, 523.25], // Fmaj7
+          [87.31,  130.81, 207.65, 293.66, 415.30, 493.88]  // Fm6
+        ];
+
+        let patternIdx = 0;
+        function loopBallad() {
+          const notes = chordPatterns[patternIdx % chordPatterns.length];
+          const now = ctx.currentTime;
+
+          playNote(notes[0], now, 3.8, 0.07);
+
+          notes.slice(1).forEach((freq, idx) => {
+            const delay = 0.32 * (idx + 1);
+            playNote(freq, now + delay, 3.2, 0.038);
+          });
+
+          if (patternIdx % 2 === 0) {
+            playNote(notes[notes.length - 1] * 1.5, now + 1.8, 2.5, 0.018);
+          }
+
+          patternIdx++;
+          setTimeout(loopBallad, 2800);
+        }
+
+        loopBallad();
+      } catch (e) {}
+    }
+
+    // ==============================================================
+    // SCREEN 1: DODGING "NO" BUTTON (NATURAL SIDE-BY-SIDE FIRST)
+    // ==============================================================
+    let noButtonDodged = false;
+    function moveNoButton() {
+      if (!noButtonDodged) {
+        btnNo.style.position = 'fixed';
+        noButtonDodged = true;
+      }
+      const margin = 20;
+      const btnW = btnNo.offsetWidth || 124;
+      const btnH = btnNo.offsetHeight || 48;
+      const maxX = Math.max(margin, window.innerWidth - btnW - margin);
+      const maxY = Math.max(margin, window.innerHeight - btnH - margin);
+      const yesRect = btnYes.getBoundingClientRect();
+
+      let randomX = margin;
+      let randomY = margin;
+      for (let attempt = 0; attempt < 15; attempt++) {
+        const candidateX = margin + Math.floor(Math.random() * Math.max(1, maxX - margin));
+        const candidateY = margin + Math.floor(Math.random() * Math.max(1, maxY - margin));
+        const overlapsYes =
+          candidateX < yesRect.right + 16 &&
+          candidateX + btnW > yesRect.left - 16 &&
+          candidateY < yesRect.bottom + 16 &&
+          candidateY + btnH > yesRect.top - 16;
+        randomX = candidateX;
+        randomY = candidateY;
+        if (!overlapsYes) break;
+      }
+
+      btnNo.style.left = `${randomX}px`;
+      btnNo.style.top = `${randomY}px`;
+    }
+
+    btnNo.addEventListener('mouseenter', moveNoButton);
+    btnNo.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      moveNoButton();
+    }, { passive: false });
+    btnNo.addEventListener('click', moveNoButton);
+
+    // ==============================================================
+    // SCREEN 3: SENTENCES IN FRAMELESS PURE DARK SPACE TERMINAL
+    // ==============================================================
+    const messages = [
+      "ครบรอบ 1 ปี 8 เดือน เค้ารักเธอมากๆเลยนะ",
+      "เค้าจะคอยอยู่เคียงข้างและกำลังใจให้เธอไม่ต้องห่วงเลยนะ",
+      "การกระทำอะไรที่ไม่ดีหรืออะไรที่เธอไม่ชอบเค้าขอโทษนะครับ"
+    ];
+
+    let currentSentenceIdx = 0;
+    let isTyping = false;
+    let typeTimer = null;
+    let autoAdvanceTimer = null;
+
+    function advanceScreen3() {
+      if (autoAdvanceTimer) {
+        clearTimeout(autoAdvanceTimer);
+        autoAdvanceTimer = null;
+      }
+      if (currentSentenceIdx < messages.length - 1) {
+        currentSentenceIdx++;
+        typeSentence(messages[currentSentenceIdx]);
+      } else {
+        triggerOriginalErrorScreen();
+      }
+    }
+
+    function typeSentence(sentence) {
+      if (autoAdvanceTimer) {
+        clearTimeout(autoAdvanceTimer);
+        autoAdvanceTimer = null;
+      }
+      typedTextEl.textContent = "";
+      isTyping = true;
+      let charIdx = 0;
+
+      function typeChar() {
+        if (charIdx < sentence.length) {
+          const char = sentence.charAt(charIdx);
+          typedTextEl.textContent += char;
+          charIdx++;
+
+          if (char !== " ") {
+            playCyberKeystroke();
+          }
+
+          typeTimer = setTimeout(typeChar, 42 + Math.random() * 24);
+        } else {
+          isTyping = false;
+          // Auto advance smoothly after reading time if screen is not clicked
+          autoAdvanceTimer = setTimeout(advanceScreen3, 4200);
+        }
+      }
+
+      typeChar();
+    }
+
+    messageScreen.addEventListener('click', () => {
+      if (isTyping) {
+        clearTimeout(typeTimer);
+        typedTextEl.textContent = messages[currentSentenceIdx];
+        isTyping = false;
+        if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+        autoAdvanceTimer = setTimeout(advanceScreen3, 4200);
+        return;
+      }
+
+      advanceScreen3();
+    });
+
+    // ==============================================================
+    // SCREEN 4: ORIGINAL RED GLITCH ERROR SCREEN (WITH CRT SCREEN CUT)
+    // ==============================================================
+    function triggerOriginalErrorScreen() {
+      if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+      messageScreen.style.opacity = '0';
+      messageScreen.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        messageScreen.style.display = 'none';
+        errorScreen.style.opacity = '1';
+        errorScreen.classList.add('glitch-flash');
+        playGlitchAlarm();
+
+        // After 2.1 seconds of glitch overload alarm, trigger dramatic CRT Screen Cut (จอตัด)
+        setTimeout(() => {
+          playScreenCutSound();
+          errorScreen.classList.remove('glitch-flash');
+          errorScreen.classList.add('screen-cut-flash');
+
+          // Snap directly into Screen 5 Hacker Cipher Gateway
+          setTimeout(() => {
+            errorScreen.style.display = 'none';
+            finalScreen.style.opacity = '1';
+            finalScreen.style.pointerEvents = 'auto';
+            hackerInput.focus();
+            startHexStream();
+            playCyberKeystroke();
+          }, 420);
+        }, 2100);
+      }, 500);
+    }
+
+    // Hex stream generator
+    let hexInterval = null;
+    function startHexStream() {
+      const hexList = ["0x7F", "0x4A", "0x1C", "0x99", "0xEE", "0x02", "0x4C", "0x4F", "0x56", "0x45", "0x31", "0x38", "0x6E", "0x61", "0x70", "0x6B", "0x73", "0x68", "0x79"];
+      hexInterval = setInterval(() => {
+        let block = "";
+        for (let r = 0; r < 8; r++) {
+          block += `${hexList[Math.floor(Math.random() * hexList.length)]} ${hexList[Math.floor(Math.random() * hexList.length)]} ${hexList[Math.floor(Math.random() * hexList.length)]}<br>`;
+        }
+        hexStream.innerHTML = block;
+      }, 150);
+    }
+
+    // ==============================================================
+    // SCREEN 5: CIPHER DECRYPTION TRAP & BUTTON UNLOCK LOGIC
+    // ==============================================================
+    const trapPhrases = [
+      "",
+      "รัก",
+      "รักเธอ",
+      "รักเธอที่สุด",
+      "รักเธอที่สุดในโลก",
+      "รักเธอที่สุดในโลกเลย❤️"
+    ];
+    let trapStep = 0;
+    let isScrambling = false;
+    const cipherChars = "0101#@!$%&/<>_~*^";
+
+    function advanceTrapStep() {
+      if (isScrambling) return;
+
+      if (trapStep < trapPhrases.length - 1) {
+        trapStep++;
+        isScrambling = true;
+
+        playCyberKeystroke();
+
+        let scrambleCount = 0;
+        const targetWord = trapPhrases[trapStep];
+
+        const scrambleInterval = setInterval(() => {
+          scrambleCount++;
+          let randomCipher = "";
+          for (let i = 0; i < Math.max(4, targetWord.length); i++) {
+            randomCipher += cipherChars[Math.floor(Math.random() * cipherChars.length)];
+          }
+          hackerInput.value = randomCipher;
+
+          if (scrambleCount > 3) {
+            clearInterval(scrambleInterval);
+            hackerInput.value = targetWord;
+            isScrambling = false;
+            updateLockState();
+          }
+        }, 35);
+      }
+    }
+
+    function revertTrapStep() {
+      if (trapStep > 0) {
+        trapStep--;
+        hackerInput.value = trapPhrases[trapStep];
+        playCyberKeystroke();
+        updateLockState();
+      }
+    }
+
+    function updateLockState() {
+      const maxSteps = trapPhrases.length - 1;
+      cipherHint.textContent = `> ถอดรหัสคำตอบ: [ ${trapStep} / ${maxSteps} คำ ]`;
+
+      if (trapStep === maxSteps) {
+        gatewayStatus.textContent = "[STATUS: AUTHENTICATED 🔓]";
+        gatewayStatus.style.color = "#34d399";
+
+        btnSubmitAnswer.disabled = false;
+        btnSubmitAnswer.classList.remove("btn-locked");
+        btnSubmitAnswer.classList.add("btn-unlocked");
+        btnSubmitAnswer.textContent = "[ 🔓 ROOT_ACCESS_GRANTED // ส่งคำตอบ ]";
+
+        playUnlockChime();
+      } else {
+        gatewayStatus.textContent = "[STATUS: LOCKED 🔒]";
+        gatewayStatus.style.color = "#fb7185";
+
+        btnSubmitAnswer.disabled = true;
+        btnSubmitAnswer.classList.add("btn-locked");
+        btnSubmitAnswer.classList.remove("btn-unlocked");
+        btnSubmitAnswer.textContent = `[ 🔒 ACCESS_DENIED // ต้องพิมพ์ตอบให้ครบก่อน (${trapStep}/${maxSteps}) ]`;
+      }
+    }
+
+    hackerInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        if (trapStep === trapPhrases.length - 1) {
+          submitAnswer();
+        }
+        return;
+      }
+
+      e.preventDefault();
+
+      if (e.key === 'Backspace') {
+        revertTrapStep();
+      } else {
+        advanceTrapStep();
+      }
+    });
+
+    hackerInput.addEventListener('input', (e) => {
+      e.preventDefault();
+      advanceTrapStep();
+    });
+
+    mobileTypeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      advanceTrapStep();
+      hackerInput.focus();
+    });
+
+    btnSubmitAnswer.addEventListener('click', () => {
+      if (trapStep === trapPhrases.length - 1) {
+        submitAnswer();
+      }
+    });
+
+    // ==============================================================
+    // SCREEN 6: ORIGINAL SYSTEM REBOOTING SCREEN (FIRST VERSION)
+    // ==============================================================
+    function submitAnswer() {
+      clearInterval(hexInterval);
+      finalScreen.style.opacity = '0';
+      finalScreen.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        finalScreen.style.display = 'none';
+        rebootScreen.style.opacity = '1';
+        rebootScreen.style.pointerEvents = 'auto';
+        startOriginalRebootSequence();
+      }, 600);
+    }
+
+    function startOriginalRebootSequence() {
+      let progress = 0;
+      const logs = [
+        "> Authenticating root emotional signatures...",
+        "> Flushing temporary hesitation cache...",
+        "> Reloading heart kernel modules [OK]",
+        "> Applying eternal loyalty patch v1.8 [OK]",
+        "> System integrity verified: 100% Love"
+      ];
+
+      let logIdx = 0;
+      const interval = setInterval(() => {
+        progress += 2;
+        progressFill.style.width = progress + "%";
+
+        if (progress % 20 === 0 && logIdx < logs.length) {
+          rebootLog.innerHTML += "<br>" + logs[logIdx];
+          logIdx++;
+          playCyberKeystroke();
+        }
+
+        if (progress >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            stopLofiAndTransition();
+            rebootScreen.style.opacity = '0';
+
+            setTimeout(() => {
+              rebootScreen.style.display = 'none';
+              triggerHeartfeltScreen();
+            }, 1000);
+          }, 800);
+        }
+      }, 70);
+    }
+
+    // ==============================================================
+    // SCREEN 7: CINEMATIC INTERACTIVE RIPPLE TAP (TAP-TO-ADVANCE ONLY)
+    // ==============================================================
+    const heartfeltSentences = [
+      "เค้าเป็นกำลังใจให้ที่รักเสมอนะครับ",
+      "เธอเป็นคนเก่งและน่ารัก",
+      "เค้าเชื่อว่าที่รักทำได้ไม่ว่าอะไรก็ตาม",
+      "เค้าจะอยู่ข้างๆที่รักเสมอนะครับ",
+      "รักเธอเสมอเหมือนวันแรกที่ตัดสินใจรักเธอ"
+    ];
+
+    let heartfeltIdx = 0;
+    let isHeartfeltTyping = false;
+    let isHeartfeltTransitioning = false;
+    let heartfeltFinished = false;
+
+    function spawnTapRipple(x, y) {
+      const outer = document.createElement('span');
+      outer.className = 'tap-ripple';
+      outer.style.left = `${x}px`;
+      outer.style.top = `${y}px`;
+      outer.addEventListener('animationend', () => outer.remove());
+
+      const inner = document.createElement('span');
+      inner.className = 'tap-ripple-inner';
+      inner.style.left = `${x}px`;
+      inner.style.top = `${y}px`;
+      inner.addEventListener('animationend', () => inner.remove());
+
+      heartfeltScreen.appendChild(outer);
+      heartfeltScreen.appendChild(inner);
+    }
+
+    function finishHeartfeltSequence() {
+      if (heartfeltFinished) return;
+      heartfeltFinished = true;
+      if (heartfeltHint) heartfeltHint.classList.remove('ready');
+      heartfeltScreen.style.pointerEvents = 'none';
+      heartfeltContainer.classList.add('fade-out');
+
+      setTimeout(() => {
+        grandLove.classList.add('show');
+
+        setTimeout(() => {
+          grandLove.classList.remove('show');
+          setTimeout(() => {
+            triggerEndCredits();
+          }, 1800);
+        }, 4500);
+      }, 1500);
+    }
+
+    function typeHeartfeltSentence(sentence) {
+      heartfeltTypedTextEl.textContent = "";
+      isHeartfeltTyping = true;
+      if (heartfeltHint) heartfeltHint.classList.remove('ready');
+      let charIdx = 0;
+
+      function typeChar() {
+        if (charIdx < sentence.length) {
+          const char = sentence.charAt(charIdx);
+          heartfeltTypedTextEl.textContent += char;
+          charIdx++;
+
+          if (char !== " ") {
+            playWarmKeystroke();
+          }
+
+          let delay = 62 + Math.random() * 28;
+          if (char === " " || char === "ๆ") delay += 35;
+
+          setTimeout(typeChar, delay);
+        } else {
+          isHeartfeltTyping = false;
+          if (heartfeltHint) heartfeltHint.classList.add('ready');
+        }
+      }
+
+      typeChar();
+    }
+
+    heartfeltScreen.addEventListener('click', (e) => {
+      if (heartfeltFinished || isHeartfeltTyping || isHeartfeltTransitioning) return;
+
+      const tapX = e.clientX || window.innerWidth / 2;
+      const tapY = e.clientY || window.innerHeight / 2;
+      spawnTapRipple(tapX, tapY);
+      playWarmKeystroke();
+      if (navigator.vibrate) {
+        try { navigator.vibrate(12); } catch (_) {}
+      }
+
+      isHeartfeltTransitioning = true;
+      if (heartfeltHint) heartfeltHint.classList.remove('ready');
+      heartfeltContainer.classList.add('blur-out');
+
+      setTimeout(() => {
+        if (heartfeltIdx < heartfeltSentences.length - 1) {
+          heartfeltIdx++;
+          heartfeltTypedTextEl.textContent = "";
+          heartfeltContainer.classList.remove('blur-out');
+          isHeartfeltTransitioning = false;
+          typeHeartfeltSentence(heartfeltSentences[heartfeltIdx]);
+        } else {
+          isHeartfeltTransitioning = false;
+          finishHeartfeltSequence();
+        }
+      }, 550);
+    });
+
+    function triggerHeartfeltScreen() {
+      document.body.style.backgroundColor = '#05070a';
+      startSadHeartwarmingPiano();
+
+      heartfeltScreen.style.opacity = '1';
+      heartfeltScreen.style.pointerEvents = 'auto';
+
+      setTimeout(() => {
+        typeHeartfeltSentence(heartfeltSentences[0]);
+      }, 900);
+    }
+
+    hackerInput.addEventListener('focus', () => {
+      if (window.innerWidth <= 650) {
+        setTimeout(() => {
+          hackerInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 300);
+      }
+    });
+
+    // ==============================================================
+    // SCREEN 8: MOVIE END CREDITS
+    // ==============================================================
+    function triggerEndCredits() {
+      heartfeltScreen.style.opacity = '0';
+      heartfeltScreen.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        heartfeltScreen.style.display = 'none';
+        creditsScreen.style.opacity = '1';
+        creditsScreen.style.pointerEvents = 'auto';
+
+        // Calculate exact target translateY so the replay button stops right in center
+        const replayBtn = document.getElementById('btn-replay');
+        if (replayBtn) {
+          const btnCenterOffset = replayBtn.offsetTop + (replayBtn.offsetHeight / 2);
+          const viewportCenter = window.innerHeight / 2;
+          const targetY = viewportCenter - btnCenterOffset;
+          creditsCrawler.style.setProperty('--target-translate-y', `${targetY}px`);
+        }
+
+        // Start crawling credits smoothly like a movie
+        creditsCrawler.classList.add('crawl');
+      }, 1500);
+    }
+
+    // ==============================================================
+    // REAL-TIME LIVE ANNIVERSARY COUNTER (UPDATING EVERY SECOND)
+    // ==============================================================
+    const anniversaryStartDate = new Date(2025, 2, 9, 0, 0, 0); // 9 March 2025
+
+    function updateLiveAnniversaryTimer() {
+      const now = new Date();
+      let diff = now - anniversaryStartDate;
+      if (diff < 0) diff = 0;
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      let years = now.getFullYear() - anniversaryStartDate.getFullYear();
+      let months = now.getMonth() - anniversaryStartDate.getMonth();
+      let d = now.getDate() - anniversaryStartDate.getDate();
+      if (d < 0) {
+        months--;
+      }
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      const yearsMonthsEl = document.getElementById('anniv-years-months');
+      const tickerEl = document.getElementById('live-time-ticker');
+      const socketStatusEl = document.getElementById('ascii-socket-status');
+
+      if (yearsMonthsEl) {
+        yearsMonthsEl.textContent = `${years} YEAR${years > 1 ? 'S' : ''} ${months} MONTH${months > 1 ? 'S' : ''}`;
+      }
+      if (tickerEl) {
+        const pad = (n) => String(n).padStart(2, '0');
+        tickerEl.textContent = `${days} DAYS ${pad(hours)}H : ${pad(minutes)}M : ${pad(seconds)}S`;
+      }
+      if (socketStatusEl) {
+        socketStatusEl.textContent = `[SOCKET: ${days}_DAYS_ANNIVERSARY]`;
+      }
+    }
+    setInterval(updateLiveAnniversaryTimer, 1000);
+    updateLiveAnniversaryTimer();
+
+    // ==============================================================
+    // SCREEN 2: HEART WORDS IN ALL LANGUAGES
+    // ==============================================================
+    function getHeartPoint(t, scale) {
+      const x = 16 * Math.pow(Math.sin(t), 3);
+      const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+      return { x: x * scale, y: y * scale };
+    }
+
+    let words = [];
+    const allLanguagePhrases = [
+      // Thai
+      "รักเธอที่สุด", "รัก napakshy", "รักเธอนะ", "ที่รัก", "รักเธอตลอดไป", "คนดีของเค้า",
+      // English
+      "I Love You", "Forever You", "My Whole World", "Only You",
+      // Japanese
+      "愛してる", "大好き", "ずっと一緒",
+      // Korean
+      "사랑해", "내 사랑",
+      // French
+      "Je t'aime",
+      // Spanish
+      "Te amo", "Te quiero",
+      // Italian
+      "Ti amo",
+      // German
+      "Ich liebe dich",
+      // Chinese
+      "我爱你",
+      // Russian
+      "Я тебя люблю",
+      // Arabic
+      "أحبك",
+      // Portuguese
+      "Eu te amo",
+      // Swedish
+      "Jag älskar dig",
+      // Dutch
+      "Ik hou van jou",
+      // Vietnamese
+      "Anh yêu em",
+      // Greek
+      "Σ' αγαπώ",
+      // Cyber phrases
+      "system.love(napakshy)", "01001001", "kernel.bind(love)", "heart.overflow(100%)"
+    ];
+
+    const hackerColors = [
+      "#34d399", "#6ee7b7", "#f4f4f5", "#fb7185", "#fda4af", "#e4e4e7"
+    ];
+
+    let viewW = window.innerWidth;
+    let viewH = window.innerHeight;
+    function handleResize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      viewW = window.innerWidth;
+      viewH = window.innerHeight;
+      canvas.width = Math.floor(viewW * dpr);
+      canvas.height = Math.floor(viewH * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    let wordSpawnInterval = null;
+    let isHeartAnimating = false;
+
+    function initHeartAnimation() {
+      words = [];
+      isHeartAnimating = true;
+      const isMobile = viewW < 640;
+      const cx = viewW / 2;
+      const cy = viewH / 2;
+      const minDimension = Math.min(viewW, viewH);
+      const baseScale = minDimension / (isMobile ? 32 : 34);
+
+      let totalSpawned = 0;
+      const maxWords = isMobile ? 1200 : 2400;
+      const batchSize = isMobile ? 10 : 16;
+
+      wordSpawnInterval = setInterval(() => {
+        if (totalSpawned >= maxWords) {
+          clearInterval(wordSpawnInterval);
+          return;
+        }
+
+        for (let b = 0; b < batchSize; b++) {
+          totalSpawned++;
+          const progressRatio = totalSpawned / maxWords;
+
+          let posX, posY;
+
+          if (progressRatio < 0.28) {
+            const t = Math.random() * Math.PI * 2;
+            const density = Math.sqrt(Math.random()) * 1.05;
+            const pt = getHeartPoint(t, baseScale * (0.08 + density));
+            posX = cx + pt.x + (Math.random() - 0.5) * 18;
+            posY = cy + pt.y + (Math.random() - 0.5) * 18;
+          } else {
+            const spreadFactor = (progressRatio - 0.28) / 0.72;
+            if (Math.random() < 0.28) {
+              const t = Math.random() * Math.PI * 2;
+              const density = Math.sqrt(Math.random()) * (1 + spreadFactor * 1.8);
+              const pt = getHeartPoint(t, baseScale * density);
+              posX = cx + pt.x + (Math.random() - 0.5) * 30;
+              posY = cy + pt.y + (Math.random() - 0.5) * 30;
+            } else {
+              posX = Math.random() * viewW;
+              posY = Math.random() * viewH;
+            }
+          }
+
+          words.push({
+            x: posX,
+            y: posY,
+            text: allLanguagePhrases[Math.floor(Math.random() * allLanguagePhrases.length)],
+            size: Math.floor((isMobile ? 9 : 10.5) + Math.random() * (isMobile ? 5.5 : 7)),
+            color: hackerColors[Math.floor(Math.random() * hackerColors.length)],
+            alpha: 0,
+            targetAlpha: 0.35 + Math.random() * 0.55,
+            fadeInSpeed: 0.045 + Math.random() * 0.04,
+            glow: !isMobile && Math.random() > 0.55
+          });
+        }
+      }, 55);
+
+      animate();
+
+      setTimeout(() => {
+        clearInterval(wordSpawnInterval);
+        heartScreen.style.transition = 'opacity 2.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        heartScreen.style.opacity = '0';
+
+        setTimeout(() => {
+          isHeartAnimating = false;
+          heartScreen.style.display = 'none';
+          messageScreen.style.opacity = '1';
+          messageScreen.style.pointerEvents = 'auto';
+
+          setTimeout(() => {
+            typeSentence(messages[0]);
+          }, 800);
+        }, 2400);
+      }, 14000);
+    }
+
+    let frame = 0;
+    function animate() {
+      if (!isHeartAnimating) return;
+      ctx.clearRect(0, 0, viewW, viewH);
+      frame += 0.015;
+
+      const heartBeat = 1 + 0.018 * Math.sin(frame * 1.8);
+      const cx = viewW / 2;
+      const cy = viewH / 2;
+
+      for (let i = 0; i < words.length; i++) {
+        const w = words[i];
+
+        if (w.alpha < w.targetAlpha) {
+          w.alpha += w.fadeInSpeed;
+        }
+
+        const floatAlpha = w.alpha * (0.88 + 0.12 * Math.sin(frame * 2 + w.size));
+        const currentAlpha = Math.max(0.1, Math.min(1, floatAlpha));
+
+        ctx.save();
+        ctx.font = `600 ${w.size}px 'JetBrains Mono', 'IBM Plex Sans Thai', monospace`;
+        ctx.fillStyle = w.color;
+        ctx.globalAlpha = currentAlpha;
+
+        if (w.glow) {
+          ctx.shadowColor = w.color;
+          ctx.shadowBlur = 5;
+        }
+
+        const dx = (w.x - cx) * heartBeat;
+        const dy = (w.y - cy) * heartBeat;
+
+        ctx.fillText(w.text, cx + dx, cy + dy);
+        ctx.restore();
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    btnYes.addEventListener('click', () => {
+      getAudioContext();
+      questionScreen.style.opacity = '0';
+      playLofiMelody();
+
+      setTimeout(() => {
+        questionScreen.style.display = 'none';
+        heartScreen.style.opacity = '1';
+        heartScreen.style.pointerEvents = 'auto';
+        centerName.classList.add('show');
+
+        initHeartAnimation();
+      }, 800);
+    });
+  </script>
+</body>
+</html>
