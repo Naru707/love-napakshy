@@ -1566,6 +1566,15 @@
         gatewayStatus.textContent = "[STATUS: AUTHENTICATED 🔓]";
         gatewayStatus.style.color = "#34d399";
 
+        hackerInput.value = trapPhrases[maxSteps];
+        hackerInput.readOnly = true;
+        hackerInput.blur();
+        if (mobileTypeBtn) {
+          mobileTypeBtn.disabled = true;
+          mobileTypeBtn.style.opacity = "0.4";
+          mobileTypeBtn.style.pointerEvents = "none";
+        }
+
         btnSubmitAnswer.disabled = false;
         btnSubmitAnswer.classList.remove("btn-locked");
         btnSubmitAnswer.classList.add("btn-unlocked");
@@ -1575,6 +1584,13 @@
       } else {
         gatewayStatus.textContent = "[STATUS: LOCKED 🔒]";
         gatewayStatus.style.color = "#fb7185";
+
+        hackerInput.readOnly = false;
+        if (mobileTypeBtn) {
+          mobileTypeBtn.disabled = false;
+          mobileTypeBtn.style.opacity = "1";
+          mobileTypeBtn.style.pointerEvents = "auto";
+        }
 
         btnSubmitAnswer.disabled = true;
         btnSubmitAnswer.classList.add("btn-locked");
@@ -1591,6 +1607,14 @@
         return;
       }
 
+      if (trapStep >= trapPhrases.length - 1) {
+        e.preventDefault();
+        hackerInput.value = trapPhrases[trapStep];
+        return;
+      }
+
+      if (e.key === 'Unidentified' || e.isComposing) return;
+
       e.preventDefault();
 
       if (e.key === 'Backspace') {
@@ -1600,9 +1624,29 @@
       }
     });
 
-    hackerInput.addEventListener('input', (e) => {
-      e.preventDefault();
-      advanceTrapStep();
+    function handleMobileTrapInput(e) {
+      if (trapStep >= trapPhrases.length - 1) {
+        hackerInput.value = trapPhrases[trapPhrases.length - 1];
+        return;
+      }
+      if (isScrambling) {
+        return;
+      }
+      if (e && e.inputType && e.inputType.startsWith('delete')) {
+        revertTrapStep();
+      } else {
+        advanceTrapStep();
+      }
+      if (!isScrambling) {
+        hackerInput.value = trapPhrases[trapStep];
+      }
+    }
+
+    hackerInput.addEventListener('input', handleMobileTrapInput);
+    hackerInput.addEventListener('compositionend', () => {
+      if (!isScrambling) {
+        hackerInput.value = trapPhrases[trapStep];
+      }
     });
 
     mobileTypeBtn.addEventListener('click', (e) => {
